@@ -1,4 +1,4 @@
-package bes.max.moviesearcher
+package bes.max.moviesearcher.ui.movies
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,10 +8,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import bes.max.moviesearcher.model.Movie
-import bes.max.moviesearcher.model.MovieResponse
-import bes.max.moviesearcher.network.MovieApi
+import bes.max.moviesearcher.R
+import bes.max.moviesearcher.domain.models.Movie
+import bes.max.moviesearcher.data.dto.MovieSearchResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,8 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getMovies(userInput: String) {
-        MovieApi.movieRetrofitService.getMovies(userInput).enqueue(object: Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+        MovieApi.movieRetrofitService.getMovies(userInput).enqueue(object: Callback<MovieSearchResponse> {
+            override fun onResponse(call: Call<MovieSearchResponse>, response: Response<MovieSearchResponse>) {
                 if (response.code() == 200) {
                     listOfMovies.clear()
                     adapter.notifyDataSetChanged()
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MovieSearchResponse>, t: Throwable) {
                 listOfMovies.clear()
                 adapter.notifyDataSetChanged()
                 Toast.makeText(applicationContext, "Ошибка: ${t.toString()}", Toast.LENGTH_LONG)            }

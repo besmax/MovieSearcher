@@ -1,11 +1,12 @@
-package bes.max.moviesearcher
+package bes.max.moviesearcher.ui.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import bes.max.moviesearcher.model.Movie
+import bes.max.moviesearcher.R
+import bes.max.moviesearcher.domain.models.Movie
 import com.bumptech.glide.Glide
 
 class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
