@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieSearcher</string>
     <string name="find_button">Найти</string>
+    <string name="enter_movie_name">Введите название</string>
 </resources>

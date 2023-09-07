@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView = findViewById(R.id.recycler_view_main_activity)
-        editText = findViewById(R.id.edit_text_main_activity)
-        button = findViewById(R.id.button_main_activity)
+//        recyclerView = findViewById(R.id.recycler_view_main_activity)
+//        editText = findViewById(R.id.edit_text_main_activity)
+//        button = findViewById(R.id.button_movies_screen)
 
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
