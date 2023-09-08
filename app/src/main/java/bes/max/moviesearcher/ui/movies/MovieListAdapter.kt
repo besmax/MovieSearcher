@@ -11,7 +11,11 @@ import com.bumptech.glide.Glide
 
 class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
 
-    var movies = mutableListOf<Movie>()
+    var movies = listOf<Movie>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         MovieViewHolder(parent)

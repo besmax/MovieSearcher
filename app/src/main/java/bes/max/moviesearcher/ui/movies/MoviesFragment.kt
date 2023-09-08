@@ -16,14 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
     private var _binding: FragmentMoviesBinding? = null
-    private val binding = _binding!!
+    private val binding get() = _binding!!
     private val adapter = MovieListAdapter()
-
-
-    companion object {
-        fun newInstance() = MoviesFragment()
-    }
-
     private val viewModel: MoviesViewModel by viewModels()
 
     override fun onCreateView(
@@ -37,21 +31,64 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerViewMoviesScreen.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewMoviesScreen.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewMoviesScreen.adapter = adapter
+
+        viewModel.screenState.observe(viewLifecycleOwner) {
+            when (it) {
+                MoviesScreenState.ShowContent -> showContent()
+                MoviesScreenState.Loading -> showLoading()
+                MoviesScreenState.Error -> showError()
+                MoviesScreenState.NotStarted -> showDefaultContent()
+            }
+        }
 
         binding.buttonMoviesScreen.setOnClickListener {
             if (binding.editTextMoviesScreen.text?.isNotEmpty() == true) {
-                getMovies(editText.text.toString())
-                adapter.movies = listOfMovies
-                adapter.notifyDataSetChanged()
+                viewModel.getMovies(binding.editTextMoviesScreen.text.toString())
             }
-            val inputMethodManager =
-                getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-            val view = this.currentFocus
-            if (view != null) {
-                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0)
-            }
+
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun showContent() {
+        adapter.movies = MoviesScreenState.ShowContent.movies
+        binding.recyclerViewMoviesScreen.visibility = View.VISIBLE
+        binding.progressbarMoviesScreen.visibility = View.GONE
+        binding.errorMessageMoviesScreen.visibility = View.GONE
+        hideKeyboard()
+    }
+
+    private fun showLoading() {
+        binding.recyclerViewMoviesScreen.visibility = View.GONE
+        binding.progressbarMoviesScreen.visibility = View.VISIBLE
+        binding.errorMessageMoviesScreen.visibility = View.GONE
+    }
+
+    private fun showDefaultContent() {
+        binding.recyclerViewMoviesScreen.visibility = View.GONE
+        binding.progressbarMoviesScreen.visibility = View.GONE
+        binding.errorMessageMoviesScreen.visibility = View.GONE
+    }
+
+    private fun showError() {
+        binding.recyclerViewMoviesScreen.visibility = View.GONE
+        binding.progressbarMoviesScreen.visibility = View.GONE
+        binding.errorMessageMoviesScreen.visibility = View.VISIBLE
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = activity?.currentFocus
+        if (view != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
     }
 
