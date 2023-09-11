@@ -3,4 +3,12 @@
     <string name="find_button">Найти</string>
     <string name="enter_movie_name">Введите название</string>
     <string name="error_message_movies_screen">Что-то пошло не так, проверьте подключение к интернету</string>
+    <string name="imdb_rate">Рейтинг IMDB:</string>
+    <string name="year">Год:</string>
+    <string name="country">Страна:</string>
+    <string name="genre">Жанр:</string>
+    <string name="director">Режисер:</string>
+    <string name="writer">Сценарист:</string>
+    <string name="actors">В ролях:</string>
+    <string name="plot">Сюжет:</string>
 </resources>

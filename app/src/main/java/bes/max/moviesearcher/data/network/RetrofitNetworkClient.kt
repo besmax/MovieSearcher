@@ -1,6 +1,7 @@
 package bes.max.moviesearcher.data.network
 
 import bes.max.moviesearcher.data.NetworkClient
+import bes.max.moviesearcher.data.dto.MovieDetailsSearchRequest
 import bes.max.moviesearcher.data.dto.MovieSearchRequest
 import bes.max.moviesearcher.data.dto.Response
 import retrofit2.Retrofit
@@ -20,10 +21,16 @@ class RetrofitNetworkClient : NetworkClient {
     override fun doRequest(dto: Any): Response {
         if (dto is MovieSearchRequest) {
             val resp = imdbService.getMovies(dto.expression).execute()
-
             val body = resp.body() ?: Response()
 
             return body.apply { resultCode = resp.code() }
+
+        } else if(dto is MovieDetailsSearchRequest) {
+            val resp = imdbService.getMovieDetails(dto.movieId).execute()
+            val body = resp.body() ?: Response()
+
+            return body.apply { resultCode = resp.code() }
+
         } else {
             return Response().apply { resultCode = 400 }
         }

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.details.about.AboutFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <TextView
+        android:id="@+id/about_screen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Main title" />
+
+    <TextView
+        android:id="@+id/about_screen_rate_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imdb_rate"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_title" />
+
+    <TextView
+        android:id="@+id/about_screen_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toEndOf="@id/about_screen_rate_title"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_title"
+        tools:text="8.8" />
+
+    <TextView
+        android:id="@+id/about_screen_year_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/year"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_rate_title" />
+
+    <TextView
+        android:id="@+id/about_screen_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_rate"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_rate"
+        tools:text="2001" />
+
+    <TextView
+        android:id="@+id/about_screen_country_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/country"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_year_title" />
+
+    <TextView
+        android:id="@+id/about_screen_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_year"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_year"
+        tools:text="Russia" />
+
+    <TextView
+        android:id="@+id/about_screen_genre_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/genre"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_country_title" />
+
+    <TextView
+        android:id="@+id/about_screen_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_country"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_country"
+        tools:text="Детектив" />
+
+    <TextView
+        android:id="@+id/about_screen_director_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/director"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_genre_title" />
+
+    <TextView
+        android:id="@+id/about_screen_director"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_genre"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_genre"
+        tools:text="Иванов М.В." />
+
+    <TextView
+        android:id="@+id/about_screen_writer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/writer"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_director_title" />
+
+    <TextView
+        android:id="@+id/about_screen_writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_director"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_director"
+        tools:text="Петров А.И." />
+
+    <TextView
+        android:id="@+id/about_screen_actors_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/actors"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_writer" />
+
+    <TextView
+        android:id="@+id/about_screen_actors"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/about_screen_writer"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_writer"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        tools:text="Петров А.И., Соловей А.А., Антонов З.Е., Новиков А.М." />
+
+    <TextView
+        android:id="@+id/about_screen_plot_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/plot"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_actors"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"/>
+    <TextView
+        android:id="@+id/about_screen_plot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/about_screen_plot_title"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        tools:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
