@@ -18,6 +18,8 @@ class DetailsViewModel @Inject constructor(
     private val state: SavedStateHandle
 ) : ViewModel() {
 
+    val movieId = state.get<String>("movieId")
+
     private val _screenState = MutableLiveData<MoviesScreenState>(MoviesScreenState.NotStarted)
     val screenState: LiveData<MoviesScreenState> = _screenState
 
