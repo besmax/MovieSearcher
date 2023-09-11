@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bes.max.moviesearcher.databinding.FragmentMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +18,7 @@ class MoviesFragment : Fragment() {
 
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!
-    private val adapter = MovieListAdapter()
+    private lateinit var adapter: MovieListAdapter
     private val viewModel: MoviesViewModel by viewModels()
 
     override fun onCreateView(
@@ -33,6 +34,11 @@ class MoviesFragment : Fragment() {
 
         binding.recyclerViewMoviesScreen.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapter = MovieListAdapter { movieId ->
+            val action = MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(movieId)
+            findNavController().navigate(action)
+
+        }
         binding.recyclerViewMoviesScreen.adapter = adapter
 
         viewModel.screenState.observe(viewLifecycleOwner) {

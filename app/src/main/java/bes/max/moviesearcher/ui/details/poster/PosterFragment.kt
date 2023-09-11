@@ -30,6 +30,6 @@ class PosterFragment : Fragment() {
     }
 
     companion object {
-
+        fun newInstance() = PosterFragment()
     }
 }

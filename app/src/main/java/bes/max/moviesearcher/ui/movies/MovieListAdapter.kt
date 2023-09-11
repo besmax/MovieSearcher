@@ -9,7 +9,9 @@ import bes.max.moviesearcher.R
 import bes.max.moviesearcher.domain.models.Movie
 import com.bumptech.glide.Glide
 
-class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
+class MovieListAdapter(
+    private val onListItemClick: (movieId: String) -> Unit
+) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
 
     var movies = listOf<Movie>()
         set(value) {
@@ -25,6 +27,7 @@ class MovieListAdapter : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(movies[position])
+        holder.itemView.setOnClickListener { onListItemClick.invoke(movies[position].id) }
     }
 
     class MovieViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(

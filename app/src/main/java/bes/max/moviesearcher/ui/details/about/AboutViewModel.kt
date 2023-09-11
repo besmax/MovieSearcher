@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AboutViewModel @Inject constructor(
-    private val movieId: String,
+    //private val movieId: String,
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 

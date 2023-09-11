@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MovieSearcher</string>
     <string name="find_button">Найти</string>
+    <string name="tab_poster">Постер</string>
+    <string name="tab_about">О фильме</string>
     <string name="enter_movie_name">Введите название</string>
     <string name="error_message_movies_screen">Что-то пошло не так, проверьте подключение к интернету</string>
     <string name="imdb_rate">Рейтинг IMDB:</string>
