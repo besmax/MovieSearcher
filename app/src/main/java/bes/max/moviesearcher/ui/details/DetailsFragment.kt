@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import bes.max.moviesearcher.R
 import bes.max.moviesearcher.databinding.FragmentDetailsBinding
-import bes.max.moviesearcher.databinding.FragmentMoviesBinding
+import bes.max.moviesearcher.ui.main.MainActivityViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,6 +19,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DetailsViewModel by viewModels()
+    private val sharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var tabMediator: TabLayoutMediator
 
     override fun onCreateView(

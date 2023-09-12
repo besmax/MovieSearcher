@@ -1,4 +1,4 @@
-package bes.max.moviesearcher.ui.movies
+package bes.max.moviesearcher.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bes.max.moviesearcher.databinding.FragmentMoviesBinding
+import bes.max.moviesearcher.ui.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +22,7 @@ class MoviesFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: MovieListAdapter
     private val viewModel: MoviesViewModel by viewModels()
+    private val sharedViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +37,10 @@ class MoviesFragment : Fragment() {
 
         binding.recyclerViewMoviesScreen.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapter = MovieListAdapter { movieId ->
+
+        adapter = MovieListAdapter { movieId, posterUrl ->
+            sharedViewModel.movieId.value = movieId
+            sharedViewModel.posterUrl.value = posterUrl
             val action = MoviesFragmentDirections.actionMoviesFragmentToDetailsFragment(movieId)
             findNavController().navigate(action)
 
