@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import bes.max.moviesearcher.databinding.FragmentAboutBinding
+import bes.max.moviesearcher.domain.models.MovieDetails
 import bes.max.moviesearcher.ui.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +26,7 @@ class AboutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        FragmentAboutBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,16 +34,25 @@ class AboutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedViewModel.movieId.value?.let { viewModel.getMovieDetails(it) }
-
+        viewModel.movieDetails.observe(viewLifecycleOwner) {
+            bind(it)
+        }
     }
 
-    private fun bind() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun bind(movieDetails: MovieDetails) {
         with(binding) {
-            if (viewModel.movieDetails.value != null) {
-                aboutScreenRate.text = viewModel.movieDetails.value!!.imDbRating
-            }
-
-
+            aboutScreenTitle.text = movieDetails.title
+            aboutScreenRate.text = movieDetails.imDbRating
+            aboutScreenCountry.text = movieDetails.countries
+            aboutScreenDirector.text = movieDetails.directors
+            aboutScreenWriter.text = movieDetails.writers
+            aboutScreenActors.text = movieDetails.stars
+            aboutScreenPlot.text = movieDetails.plot
         }
     }
 

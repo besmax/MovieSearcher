@@ -34,12 +34,16 @@ class PosterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showPoster()
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showPoster() {
         Glide.with(binding.root)
-            .load(sharedViewModel.posterUrl)
+            .load(sharedViewModel.posterUrl.value)
             .into(binding.posterScreenPoster)
 
     }

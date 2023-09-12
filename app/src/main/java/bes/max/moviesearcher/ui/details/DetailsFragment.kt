@@ -18,8 +18,6 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DetailsViewModel by viewModels()
-    private val sharedViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var tabMediator: TabLayoutMediator
 
     override fun onCreateView(
@@ -49,6 +47,7 @@ class DetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         tabMediator.detach()
     }
 
