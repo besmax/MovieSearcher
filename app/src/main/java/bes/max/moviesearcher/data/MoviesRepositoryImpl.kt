@@ -1,12 +1,16 @@
 package bes.max.moviesearcher.data
 
+import bes.max.moviesearcher.data.dto.MovieCastResponse
 import bes.max.moviesearcher.data.dto.MovieDetailsResponse
 import bes.max.moviesearcher.data.dto.MovieDetailsSearchRequest
+import bes.max.moviesearcher.data.dto.MovieFullCastRequest
 import bes.max.moviesearcher.data.dto.MovieSearchRequest
 import bes.max.moviesearcher.data.dto.MovieSearchResponse
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.Movie
+import bes.max.moviesearcher.domain.models.MovieCastPerson
 import bes.max.moviesearcher.domain.models.MovieDetails
+import bes.max.moviesearcher.domain.models.MovieFullCast
 
 class MoviesRepositoryImpl(private val networkClient: NetworkClient) : MoviesRepository {
 
@@ -51,6 +55,59 @@ class MoviesRepositoryImpl(private val networkClient: NetworkClient) : MoviesRep
                 "plot"
             )
         }
+    }
+
+    override fun getMovieFullCast(movieId: String): MovieFullCast {
+        val response = networkClient.doRequest(MovieFullCastRequest(movieId))
+        if (response.resultCode == 200) {
+            val movieFullCast = response as MovieCastResponse
+            return MovieFullCast(
+                imdbId = movieFullCast.imDbId,
+                fullTitle = movieFullCast.fullTitle,
+                directors = movieFullCast.directors.items.map { director ->
+                    MovieCastPerson(
+                        id = director.id,
+                        name = director.name,
+                        description = director.description,
+                        image = null
+                    )
+                },
+                writers = movieFullCast.writers.items.map { writer ->
+                    MovieCastPerson(
+                        id = writer.id,
+                        name = writer.name,
+                        description = writer.description,
+                        image = null
+                    )
+                },
+                actors = movieFullCast.actors.map { actor ->
+                    MovieCastPerson(
+                        id = actor.id,
+                        name = actor.name,
+                        description = actor.asCharacter,
+                        image = actor.image
+                    )
+                },
+                others = movieFullCast.others.flatMap { otherResponse ->
+                    otherResponse.items.map { other ->
+                        MovieCastPerson(
+                            id = other.id,
+                            name = other.name,
+                            description = other.description,
+                            image = null
+                        )
+                    }
+                }
+            )
+        }
+        return MovieFullCast(
+            "",
+            "",
+            emptyList<MovieCastPerson>(),
+            emptyList<MovieCastPerson>(),
+            emptyList<MovieCastPerson>(),
+            emptyList<MovieCastPerson>(),
+        )
     }
 
 

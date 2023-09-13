@@ -1,6 +1,7 @@
 package bes.max.moviesearcher.data.network
 
 import bes.max.moviesearcher.data.dto.MovieDetailsResponse
+import bes.max.moviesearcher.data.dto.MovieFullCastResponse
 import bes.max.moviesearcher.data.dto.MovieSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -15,6 +16,10 @@ interface MovieApiService {
 
     @GET("/en/API/Title/$API_KEY/{movie_id}")
     fun getMovieDetails(@Path("movie_id") movieId: String): Call<MovieDetailsResponse>
+
+    @GET("/en/API/FullCast/$API_KEY/{movie_id}")
+    fun getMovieCast(@Path("movie_id") movieId: String): Call<MovieFullCastResponse>
+
 }
 
 
