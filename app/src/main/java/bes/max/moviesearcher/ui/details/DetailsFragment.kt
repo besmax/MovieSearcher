@@ -51,8 +51,4 @@ class DetailsFragment : Fragment() {
         tabMediator.detach()
     }
 
-    companion object {
-        fun newInstance() = DetailsFragment()
-    }
-
 }

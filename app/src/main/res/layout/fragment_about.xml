@@ -121,10 +121,11 @@
 
     <TextView
         android:id="@+id/about_screen_writer"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/about_screen_director"
         app:layout_constraintTop_toBottomOf="@id/about_screen_director"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         tools:text="Петров А.И." />
 
     <TextView

@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import bes.max.moviesearcher.databinding.FragmentAboutBinding
 import bes.max.moviesearcher.domain.models.MovieDetails
+import bes.max.moviesearcher.ui.details.DetailsFragmentDirections
 import bes.max.moviesearcher.ui.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +38,11 @@ class AboutFragment : Fragment() {
         sharedViewModel.movieId.value?.let { viewModel.getMovieDetails(it) }
         viewModel.movieDetails.observe(viewLifecycleOwner) {
             bind(it)
+        }
+
+        binding.aboutScreenShowCastButton.setOnClickListener {
+            val action = DetailsFragmentDirections.actionDetailsFragmentToCastFragment(sharedViewModel.movieId.value!!)
+            findNavController().navigate(action)
         }
     }
 

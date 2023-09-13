@@ -1,14 +1,14 @@
 package bes.max.moviesearcher.ui.cast
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import bes.max.moviesearcher.R
+import androidx.fragment.app.Fragment
 import bes.max.moviesearcher.databinding.FragmentCastBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CastFragment : Fragment() {
 
     private var _binding: FragmentCastBinding? = null
