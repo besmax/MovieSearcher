@@ -30,7 +30,7 @@ class CastViewHolder(val binding: CastListItemBinding) : RecyclerView.ViewHolder
         binding.actorDescriptionTextView.text = movieCastPerson.description
 
     }
-
+ 
     companion object {
         fun inflateFrom(parent: ViewGroup) : CastViewHolder {
             val layouInflater = LayoutInflater.from(parent.context)

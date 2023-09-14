@@ -41,7 +41,8 @@ class AboutFragment : Fragment() {
         }
 
         binding.aboutScreenShowCastButton.setOnClickListener {
-            val action = DetailsFragmentDirections.actionDetailsFragmentToCastFragment(sharedViewModel.movieId.value!!)
+            val action =
+               DetailsFragmentDirections.actionDetailsFragmentToCastFragment(sharedViewModel.movieId.value!!)
             findNavController().navigate(action)
         }
     }
