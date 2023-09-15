@@ -1,6 +1,6 @@
 package bes.max.moviesearcher.ui.cast
 
-import bes.max.moviesearcher.domain.models.MovieFullCast
+import bes.max.moviesearcher.core.ui.RVItem
 
 sealed interface CastScreenState {
 
@@ -8,7 +8,7 @@ sealed interface CastScreenState {
 
     data class Content(
         val fullTitle: String,
-        val items: List<MovieCastRVItem>
+        val items: List<RVItem>
     ) : CastScreenState
 
     data class Error(

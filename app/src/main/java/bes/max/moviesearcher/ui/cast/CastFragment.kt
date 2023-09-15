@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import bes.max.moviesearcher.databinding.FragmentCastBinding
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +18,10 @@ class CastFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CastViewModel by viewModels()
-    private val adapter = CastListAdapter()
+    private val adapter = ListDelegationAdapter(
+        movieCastHeaderDelegate(),
+        movieCastPersonDelegate()
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +57,8 @@ class CastFragment : Fragment() {
         binding.castScreenRecyclerView.visibility = View.VISIBLE
         binding.castScreenMovieTitle.visibility = View.VISIBLE
         binding.castScreenMovieTitle.text = castScreenState.fullTitle
-        adapter.submitList(castScreenState.items)
+        adapter.items = castScreenState.items
+        //TODO adapter.submitList(castScreenState.items)
     }
 
     private fun showError(castScreenState: CastScreenState.Error) {

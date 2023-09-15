@@ -16,18 +16,18 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class CastViewHolder(val binding: CastListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(movieCastPerson: MovieCastPerson) {
-        if (movieCastPerson.image == null) {
+    fun bind(movieCastRVItem: MovieCastRVItem.PersonItem) {
+        if (movieCastRVItem.data.image == null) {
             binding.actorImageView.isVisible = false
         } else {
             Glide.with(binding.root)
-                .load(movieCastPerson.image)
+                .load(movieCastRVItem.data.image)
                 .placeholder(R.drawable.not_found)
                 .transform(MultiTransformation(FitCenter(), RoundedCorners(10)))
                 .into(binding.actorImageView)
         }
-        binding.actorNameTextView.text = movieCastPerson.name
-        binding.actorDescriptionTextView.text = movieCastPerson.description
+        binding.actorNameTextView.text = movieCastRVItem.data.name
+        binding.actorDescriptionTextView.text = movieCastRVItem.data.description
 
     }
  

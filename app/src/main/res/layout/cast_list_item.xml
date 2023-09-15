@@ -31,6 +31,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/actorImageView"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_goneMarginStart="0dp"
         tools:text="Bread Pit" />
 
@@ -44,6 +45,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/actorImageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/actorNameTextView"
         app:layout_goneMarginStart="0dp"
         tools:text="As character: Joe White" />
