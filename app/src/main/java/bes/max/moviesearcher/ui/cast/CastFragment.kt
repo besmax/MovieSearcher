@@ -58,7 +58,6 @@ class CastFragment : Fragment() {
         binding.castScreenMovieTitle.visibility = View.VISIBLE
         binding.castScreenMovieTitle.text = castScreenState.fullTitle
         adapter.items = castScreenState.items
-        //TODO adapter.submitList(castScreenState.items)
     }
 
     private fun showError(castScreenState: CastScreenState.Error) {
