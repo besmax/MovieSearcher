@@ -20,15 +20,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_text_layout_movies_screen"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
+        android:layout_marginTop="8dp"
         app:endIconDrawable="@drawable/ic_clear_text"
         app:endIconMode="clear_text"
-        app:hintEnabled="false"
+        app:hintEnabled="true"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/guideline_start"
-        app:layout_constraintEnd_toStartOf="@id/button_movies_screen"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -50,9 +51,9 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
         android:text="@string/find_button"
-        app:layout_constraintStart_toEndOf="@id/edit_text_layout_movies_screen"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintEnd_toStartOf="@id/guideline_end"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/edit_text_layout_movies_screen"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_movies_screen"
@@ -60,7 +61,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintEnd_toStartOf="@id/guideline_end"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_layout_movies_screen"/>
+        app:layout_constraintTop_toBottomOf="@id/button_movies_screen"/>
 
     <ProgressBar
         android:id="@+id/progressbar_movies_screen"

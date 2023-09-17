@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.MovieFullCast
+import bes.max.moviesearcher.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +30,13 @@ class CastViewModel @Inject constructor(
 
     private fun getMovieCast(movieId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val fullCast = repository.getMovieFullCast(movieId)
-            _castScreenState.postValue(castToUiState(fullCast))
+            val response = repository.getMovieFullCast(movieId)
+            if(response is Resource.Success && response.data != null) {
+                _castScreenState.postValue(castToUiState(response.data))
+            }
+            if(response is Resource.Error && response.message != null) {
+                _castScreenState.postValue(CastScreenState.Error(response.message))
+            }
         }
     }
 

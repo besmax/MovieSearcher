@@ -1,113 +1,80 @@
 package bes.max.moviesearcher.data
 
-import bes.max.moviesearcher.data.dto.MovieCastResponse
-import bes.max.moviesearcher.data.dto.MovieDetailsResponse
-import bes.max.moviesearcher.data.dto.MovieDetailsSearchRequest
-import bes.max.moviesearcher.data.dto.MovieFullCastRequest
-import bes.max.moviesearcher.data.dto.MovieSearchRequest
-import bes.max.moviesearcher.data.dto.MovieSearchResponse
+import bes.max.moviesearcher.data.dto.responses.MovieCastResponse
+import bes.max.moviesearcher.data.dto.responses.MovieDetailsResponse
+import bes.max.moviesearcher.data.dto.requests.MovieDetailsSearchRequest
+import bes.max.moviesearcher.data.dto.requests.MovieFullCastRequest
+import bes.max.moviesearcher.data.dto.requests.MovieSearchRequest
+import bes.max.moviesearcher.data.dto.responses.MovieSearchResponse
+import bes.max.moviesearcher.data.mappers.MovieCastResponseToMovieFullCastMapper
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.Movie
 import bes.max.moviesearcher.domain.models.MovieCastPerson
 import bes.max.moviesearcher.domain.models.MovieDetails
 import bes.max.moviesearcher.domain.models.MovieFullCast
+import bes.max.moviesearcher.util.Resource
 
-class MoviesRepositoryImpl(private val networkClient: NetworkClient) : MoviesRepository {
+class MoviesRepositoryImpl(
+    private val networkClient: NetworkClient,
+    private val mapper: MovieCastResponseToMovieFullCastMapper
+) : MoviesRepository {
 
-    override fun getMovies(expression: String): List<Movie> {
+    override fun getMovies(expression: String): Resource<List<Movie>> {
         val response = networkClient.doRequest(MovieSearchRequest(expression))
-        if (response.resultCode == 200) {
-            return (response as MovieSearchResponse).results.map {
-                Movie(it.id, it.resultType, it.image, it.title, it.description)
-            }
-        } else {
-            return emptyList()
-        }
-    }
-
-    override fun getMovieDetails(movieId: String): MovieDetails {
-        val response = networkClient.doRequest(MovieDetailsSearchRequest(movieId))
-        if (response.resultCode == 200) {
-            val movieDetails = (response as MovieDetailsResponse)
-            return MovieDetails(
-                movieDetails.id,
-                movieDetails.title,
-                movieDetails.imDbRating,
-                movieDetails.year,
-                movieDetails.countries,
-                movieDetails.genres,
-                movieDetails.directors,
-                movieDetails.writers,
-                movieDetails.stars,
-                movieDetails.plot
-            )
-        } else {
-            return MovieDetails(
-                "id",
-                "title",
-                "imDbRating",
-                "year",
-                "countries",
-                "genres",
-                "directors",
-                "writers",
-                "stars",
-                "plot"
-            )
-        }
-    }
-
-    override fun getMovieFullCast(movieId: String): MovieFullCast {
-        val response = networkClient.doRequest(MovieFullCastRequest(movieId))
-        if (response.resultCode == 200) {
-            val movieFullCast = response as MovieCastResponse
-            return MovieFullCast(
-                imdbId = movieFullCast.imDbId,
-                fullTitle = movieFullCast.fullTitle,
-                directors = movieFullCast.directors.items.map { director ->
-                    MovieCastPerson(
-                        id = director.id,
-                        name = director.name,
-                        description = director.description,
-                        image = null
-                    )
-                },
-                writers = movieFullCast.writers.items.map { writer ->
-                    MovieCastPerson(
-                        id = writer.id,
-                        name = writer.name,
-                        description = writer.description,
-                        image = null
-                    )
-                },
-                actors = movieFullCast.actors.map { actor ->
-                    MovieCastPerson(
-                        id = actor.id,
-                        name = actor.name,
-                        description = actor.asCharacter,
-                        image = actor.image
-                    )
-                },
-                others = movieFullCast.others.flatMap { otherResponse ->
-                    otherResponse.items.map { other ->
-                        MovieCastPerson(
-                            id = other.id,
-                            name = other.name,
-                            description = other.description,
-                            image = null
+        return when (response.resultCode) {
+            -1 -> Resource.Error("Проверьте подключение к интернету")
+            200 -> {
+                with(response as MovieSearchResponse) {
+                    Resource.Success(results.map {
+                        Movie(
+                            id = it.id,
+                            resultType = it.resultType,
+                            image = it.image,
+                            title = it.title,
+                            description = it.description
                         )
-                    }
+                    })
                 }
-            )
+            }
+
+            else -> Resource.Error("Ошибка сервера")
         }
-        return MovieFullCast(
-            "",
-            "",
-            emptyList<MovieCastPerson>(),
-            emptyList<MovieCastPerson>(),
-            emptyList<MovieCastPerson>(),
-            emptyList<MovieCastPerson>(),
-        )
+    }
+
+    override fun getMovieDetails(movieId: String): Resource<MovieDetails> {
+        val response = networkClient.doRequest(MovieDetailsSearchRequest(movieId))
+        return when (response.resultCode) {
+            -1 -> Resource.Error("Проверьте подключение к интернету")
+            200 -> {
+                with(response as MovieDetailsResponse) {
+                    Resource.Success(
+                        MovieDetails(
+                            id = this.id,
+                            title = this.title,
+                            imDbRating = this.imDbRating ?: "",
+                            year = this.year,
+                            countries = this.countries,
+                            genres = this.genres,
+                            directors = this.directors,
+                            writers = this.writers,
+                            stars = this.stars,
+                            plot = this.plot
+                        )
+                    )
+                }
+            }
+
+            else -> Resource.Error("Ошибка сервера")
+        }
+    }
+
+    override fun getMovieFullCast(movieId: String): Resource<MovieFullCast> {
+        val response = networkClient.doRequest(MovieFullCastRequest(movieId))
+        return when (response.resultCode) {
+            -1 -> Resource.Error("Проверьте подключение к интернету")
+            200 -> Resource.Success(mapper.convert(response as MovieCastResponse))
+            else -> Resource.Error("Ошибка сервера")
+        }
     }
 
 

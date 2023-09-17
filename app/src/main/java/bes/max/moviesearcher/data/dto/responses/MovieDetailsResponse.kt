@@ -1,8 +1,8 @@
-package bes.max.moviesearcher.data.dto
+package bes.max.moviesearcher.data.dto.responses
 
 data class MovieDetailsResponse(val id: String,
                                 val title: String,
-                                val imDbRating: String,
+                                val imDbRating: String?,
                                 val year: String,
                                 val countries: String,
                                 val genres: String,

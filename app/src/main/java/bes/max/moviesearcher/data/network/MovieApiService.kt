@@ -1,8 +1,8 @@
 package bes.max.moviesearcher.data.network
 
-import bes.max.moviesearcher.data.dto.MovieDetailsResponse
-import bes.max.moviesearcher.data.dto.MovieCastResponse
-import bes.max.moviesearcher.data.dto.MovieSearchResponse
+import bes.max.moviesearcher.data.dto.responses.MovieDetailsResponse
+import bes.max.moviesearcher.data.dto.responses.MovieCastResponse
+import bes.max.moviesearcher.data.dto.responses.MovieSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

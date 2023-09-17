@@ -1,4 +1,4 @@
-package bes.max.moviesearcher.data.dto
+package bes.max.moviesearcher.data.dto.responses
 
 class MovieCastResponse(
     val actors: List<ActorResponse>,

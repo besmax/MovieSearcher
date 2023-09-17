@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import bes.max.moviesearcher.domain.api.MoviesRepository
+import bes.max.moviesearcher.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,17 +24,17 @@ class MoviesViewModel @Inject constructor(
     fun getMovies(userInput: String) {
         _screenState.value = MoviesScreenState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val listOfMovies = moviesRepository.getMovies(userInput).toMutableList()
-                if(listOfMovies.isNotEmpty()) {
-                    _screenState.postValue(MoviesScreenState.ShowContent.apply {
-                        movies = listOfMovies
-                    })
-                } else {
-                    _screenState.value = MoviesScreenState.Error
-                }
-            } catch (e: Exception) {
-                _screenState.postValue(MoviesScreenState.Error)
+            val response = moviesRepository.getMovies(userInput)
+            if (response is Resource.Success && response.data != null) {
+                _screenState.postValue(MoviesScreenState.ShowContent.apply {
+                    movies = response.data
+                })
+            }
+            if (response is Resource.Error && response.message == "Проверьте подключение к интернету") {
+                _screenState.postValue(MoviesScreenState.Error.apply {
+                    noInternet =
+                        response.message == "Проверьте подключение к интернету"
+                })
             }
         }
     }
