@@ -1,6 +1,8 @@
 package bes.max.moviesearcher.ui.movies
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,12 +58,7 @@ class MoviesFragment : Fragment() {
             }
         }
 
-        binding.buttonMoviesScreen.setOnClickListener {
-            if (binding.editTextMoviesScreen.text?.isNotEmpty() == true) {
-                viewModel.getMovies(binding.editTextMoviesScreen.text.toString())
-            }
-
-        }
+        setSearchTextWatcher()
     }
 
     override fun onDestroyView() {
@@ -102,6 +99,26 @@ class MoviesFragment : Fragment() {
         if (view != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
+    }
+
+    private fun setSearchTextWatcher() {
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //no need
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(!s.isNullOrEmpty()) {
+                    viewModel.searchDebounce(s.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                //no need
+            }
+
+        }
+        binding.editTextMoviesScreen.addTextChangedListener(textWatcher)
     }
 
 }
