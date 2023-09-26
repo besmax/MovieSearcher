@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.util.Resource
+import bes.max.moviesearcher.util.debounce
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,20 +20,17 @@ class MoviesViewModel @Inject constructor(
     private val _screenState = MutableLiveData<MoviesScreenState>(MoviesScreenState.NotStarted)
     val screenState: LiveData<MoviesScreenState> = _screenState
 
-    private var searchJob: Job? = null
-    private var latestSearchText: String? = null
+    private val onInputSearchDebounce = debounce<String>(
+        delayMillis = SEARCH_DEBOUNCE_DELAY,
+        coroutineScope = viewModelScope,
+        useLastParam = true
+    ) { inputQuery ->
+        getMovies(inputQuery)
+    }
 
 
     fun searchDebounce(newSearchText: String) {
-        if (newSearchText == latestSearchText) return
-
-        latestSearchText = newSearchText
-
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            getMovies(newSearchText)
-        }
+        onInputSearchDebounce.invoke(newSearchText)
     }
 
     fun getMovies(userInput: String) {
