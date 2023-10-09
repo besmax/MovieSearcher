@@ -1,26 +1,21 @@
 package bes.max.moviesearcher.data.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.Query
 
 @Dao
 interface MovieDao {
 
     @Insert(entity = MovieEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewMovie(movieEntity: MovieEntity)
+    fun insertMovie(movieEntity: MovieEntity)
 
     @Insert(entity = MovieEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewMovies(movies: List<MovieEntity>)
+    fun insertMovies(movies: List<MovieEntity>)
 
-    @Update(entity = MovieEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun updateMovie(movieEntity: MovieEntity)
-
-    @Delete(entity = MovieEntity::class)
-    fun deleteMovie(movieEntity: MovieEntity)
-
+    @Query("SELECT * FROM movie_table")
+    fun getMovies(): List<MovieEntity>
 
 
 }
