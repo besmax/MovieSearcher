@@ -10,7 +10,6 @@ import bes.max.moviesearcher.domain.models.MovieFullCast
 import bes.max.moviesearcher.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,18 +28,19 @@ class CastViewModel @Inject constructor(
     }
 
     private fun getMovieCast(movieId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = repository.getMovieFullCast(movieId)
-            if(response is Resource.Success && response.data != null) {
-                _castScreenState.postValue(castToUiState(response.data))
-            }
-            if(response is Resource.Error && response.message != null) {
-                _castScreenState.postValue(CastScreenState.Error(response.message))
+        viewModelScope.launch {
+            repository.getMovieFullCast(movieId).collect() { response ->
+                if (response is Resource.Success && response.data != null) {
+                    _castScreenState.postValue(castToUiState(response.data))
+                }
+                if (response is Resource.Error && response.message != null) {
+                    _castScreenState.postValue(CastScreenState.Error(response.message))
+                }
             }
         }
     }
 
-    private fun castToUiState(cast: MovieFullCast) : CastScreenState {
+    private fun castToUiState(cast: MovieFullCast): CastScreenState {
         val items = buildList<MovieCastRVItem> {
             if (cast.directors.isNotEmpty()) {
                 this += MovieCastRVItem.HeaderTitle("Directors")

@@ -4,5 +4,5 @@ import bes.max.moviesearcher.data.dto.responses.Response
 
 interface NetworkClient {
 
-    fun doRequest(dto: Any): Response
+    suspend fun doRequest(dto: Any): Response
 }

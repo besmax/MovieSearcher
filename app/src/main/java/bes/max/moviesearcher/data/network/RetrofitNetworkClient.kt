@@ -8,6 +8,8 @@ import bes.max.moviesearcher.data.dto.requests.MovieDetailsSearchRequest
 import bes.max.moviesearcher.data.dto.requests.MovieFullCastRequest
 import bes.max.moviesearcher.data.dto.requests.MovieSearchRequest
 import bes.max.moviesearcher.data.dto.responses.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.lang.IllegalArgumentException
 
 class RetrofitNetworkClient(
@@ -15,7 +17,7 @@ class RetrofitNetworkClient(
     private val context: Context,
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
@@ -24,15 +26,34 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = 400 }
         }
 
-        val response = when (dto) {
-            is MovieSearchRequest -> imdbService.getMovies(dto.expression).execute()
-            is MovieDetailsSearchRequest -> imdbService.getMovieDetails(dto.movieId).execute()
-            is MovieFullCastRequest -> imdbService.getMovieCast(dto.movieId).execute()
-            else -> throw IllegalArgumentException("Unknown dto: ${dto.toString()}")
-        }
-        val body = response.body()
-        return body?.apply { resultCode = response.code() } ?: Response().apply {
-            resultCode = response.code()
+        return withContext(Dispatchers.IO) {
+            when (dto) {
+                is MovieSearchRequest -> {
+                    try {
+                        imdbService.getMovies(dto.expression).apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
+                }
+
+                is MovieDetailsSearchRequest -> {
+                    try {
+                        imdbService.getMovieDetails(dto.movieId).apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
+                }
+
+                is MovieFullCastRequest -> {
+                    try {
+                        imdbService.getMovieCast(dto.movieId).apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
+                }
+
+                else -> throw IllegalArgumentException("Unknown dto: ${dto.toString()}")
+            }
         }
     }
 
