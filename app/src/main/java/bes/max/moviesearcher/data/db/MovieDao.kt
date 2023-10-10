@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -15,7 +16,7 @@ interface MovieDao {
     fun insertMovies(movies: List<MovieEntity>)
 
     @Query("SELECT * FROM movie_table")
-    fun getMovies(): List<MovieEntity>
+    fun getMovies(): Flow<List<MovieEntity>>
 
 
 }

@@ -1,5 +1,7 @@
-package bes.max.moviesearcher.data
+package bes.max.moviesearcher.data.repositories
 
+import bes.max.moviesearcher.data.NetworkClient
+import bes.max.moviesearcher.data.db.MovieDao
 import bes.max.moviesearcher.data.dto.requests.MovieDetailsSearchRequest
 import bes.max.moviesearcher.data.dto.requests.MovieFullCastRequest
 import bes.max.moviesearcher.data.dto.requests.MovieSearchRequest
@@ -7,6 +9,7 @@ import bes.max.moviesearcher.data.dto.responses.MovieCastResponse
 import bes.max.moviesearcher.data.dto.responses.MovieDetailsResponse
 import bes.max.moviesearcher.data.dto.responses.MovieSearchResponse
 import bes.max.moviesearcher.data.mappers.MovieCastResponseToMovieFullCastMapper
+import bes.max.moviesearcher.data.mappers.MovieDbMapper
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.Movie
 import bes.max.moviesearcher.domain.models.MovieDetails
@@ -15,7 +18,9 @@ import kotlinx.coroutines.flow.flow
 
 class MoviesRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val mapper: MovieCastResponseToMovieFullCastMapper
+    private val dao: MovieDao,
+    private val mapper: MovieCastResponseToMovieFullCastMapper,
+    private val movieDbMapper: MovieDbMapper
 ) : MoviesRepository {
 
     override fun getMovies(expression: String) = flow {
@@ -23,19 +28,19 @@ class MoviesRepositoryImpl(
         when (response.resultCode) {
             -1 -> emit(Resource.Error("Проверьте подключение к интернету"))
             200 -> {
-                emit(
-                    with(response as MovieSearchResponse) {
-                        Resource.Success(results.map {
-                            Movie(
-                                id = it.id,
-                                resultType = it.resultType,
-                                image = it.image,
-                                title = it.title,
-                                description = it.description
-                            )
-                        })
+                with(response as MovieSearchResponse) {
+                    val data = results.map {
+                        Movie(
+                            id = it.id,
+                            resultType = it.resultType,
+                            image = it.image,
+                            title = it.title,
+                            description = it.description
+                        )
                     }
-                )
+                    saveMoviesToDb(data)
+                    emit(Resource.Success(data))
+                }
             }
 
             else -> emit(Resource.Error("Ошибка сервера"))
@@ -78,6 +83,11 @@ class MoviesRepositoryImpl(
             200 -> emit(Resource.Success(mapper.convert(response as MovieCastResponse)))
             else -> emit(Resource.Error("Ошибка сервера"))
         }
+    }
+
+    private suspend fun saveMoviesToDb(movies: List<Movie>) {
+        val moviesEntity = movies.map { movieDbMapper.map(it) }
+        dao.insertMovies(moviesEntity)
     }
 
 

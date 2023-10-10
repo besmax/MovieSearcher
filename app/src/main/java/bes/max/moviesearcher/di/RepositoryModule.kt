@@ -2,11 +2,14 @@ package bes.max.moviesearcher.di
 
 import android.content.Context
 import androidx.room.Room
-import bes.max.moviesearcher.data.MoviesRepositoryImpl
 import bes.max.moviesearcher.data.NetworkClient
 import bes.max.moviesearcher.data.db.MovieDao
 import bes.max.moviesearcher.data.db.MovieDatabase
 import bes.max.moviesearcher.data.mappers.MovieCastResponseToMovieFullCastMapper
+import bes.max.moviesearcher.data.mappers.MovieDbMapper
+import bes.max.moviesearcher.data.repositories.HistoryRepositoryImpl
+import bes.max.moviesearcher.data.repositories.MoviesRepositoryImpl
+import bes.max.moviesearcher.domain.api.HistoryRepository
 import bes.max.moviesearcher.domain.api.MoviesRepository
 import dagger.Module
 import dagger.Provides
@@ -24,21 +27,33 @@ class RepositoryModule {
     }
 
     @Provides
-    fun provideMovieDao(movieDatabase: MovieDatabase) : MovieDao {
+    fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao {
         return movieDatabase.getMovieDao()
     }
 
     @Provides
     fun provideMoviesRepository(
         networkClient: NetworkClient,
-        mapper: MovieCastResponseToMovieFullCastMapper
+        dao: MovieDao,
+        mapper: MovieCastResponseToMovieFullCastMapper,
+        movieDbMapper: MovieDbMapper
     ): MoviesRepository {
-        return MoviesRepositoryImpl(networkClient = networkClient, mapper = mapper)
+        return MoviesRepositoryImpl(networkClient = networkClient, dao = dao, mapper = mapper, movieDbMapper = movieDbMapper)
     }
 
     @Provides
     fun provideMovieCastResponseToMovieFullCastMapper(): MovieCastResponseToMovieFullCastMapper {
         return MovieCastResponseToMovieFullCastMapper()
+    }
+
+    @Provides
+    fun provideMovieDbMapper(): MovieDbMapper {
+        return MovieDbMapper()
+    }
+
+    @Provides
+    fun provideHistoryRepository(dao: MovieDao, mapper: MovieDbMapper): HistoryRepository {
+        return HistoryRepositoryImpl(dao, mapper)
     }
 
 }

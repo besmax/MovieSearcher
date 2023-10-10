@@ -14,4 +14,8 @@ class MovieDbMapper {
         return Movie(movie.id, movie.resultType, movie.image, movie.title, movie.description)
     }
 
+    fun map(movie: Movie): MovieEntity {
+        return MovieEntity(movie.id, movie.resultType, movie.image, movie.title, movie.description)
+    }
+
 }
