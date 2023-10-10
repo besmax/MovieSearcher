@@ -1,10 +1,9 @@
 package bes.max.moviesearcher.data.network
 
-import bes.max.moviesearcher.data.dto.responses.MovieDetailsResponse
 import bes.max.moviesearcher.data.dto.responses.MovieCastResponse
+import bes.max.moviesearcher.data.dto.responses.MovieDetailsResponse
 import bes.max.moviesearcher.data.dto.responses.MovieSearchResponse
-import kotlinx.coroutines.flow.Flow
-import retrofit2.Call
+import bes.max.moviesearcher.data.dto.responses.NamesSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -20,6 +19,9 @@ interface MovieApiService {
 
     @GET("/en/API/FullCast/$API_KEY/{movie_id}")
     suspend fun getMovieCast(@Path("movie_id") movieId: String): MovieCastResponse
+
+    @GET("/en/API/SearchName/$API_KEY/{expression}")
+    suspend fun searchNames(@Path("expression") expression: String): NamesSearchResponse
 
 }
 

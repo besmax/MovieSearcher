@@ -15,4 +15,6 @@
     <string name="plot">Сюжет:</string>
     <string name="show_cast">Show cast</string>
     <string name="nothing_searched_yet">История поиска пуста</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

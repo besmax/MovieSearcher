@@ -7,6 +7,7 @@ import bes.max.moviesearcher.data.NetworkClient
 import bes.max.moviesearcher.data.dto.requests.MovieDetailsSearchRequest
 import bes.max.moviesearcher.data.dto.requests.MovieFullCastRequest
 import bes.max.moviesearcher.data.dto.requests.MovieSearchRequest
+import bes.max.moviesearcher.data.dto.requests.NamesSearchRequest
 import bes.max.moviesearcher.data.dto.responses.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,6 +48,14 @@ class RetrofitNetworkClient(
                 is MovieFullCastRequest -> {
                     try {
                         imdbService.getMovieCast(dto.movieId).apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
+                }
+
+                is NamesSearchRequest -> {
+                    try {
+                        imdbService.searchNames(dto.expression).apply { resultCode = 200 }
                     } catch (e: Throwable) {
                         Response().apply { resultCode = 500 }
                     }
