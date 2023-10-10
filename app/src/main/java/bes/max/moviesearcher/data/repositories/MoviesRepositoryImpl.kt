@@ -14,7 +14,9 @@ import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.Movie
 import bes.max.moviesearcher.domain.models.MovieDetails
 import bes.max.moviesearcher.util.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 
 class MoviesRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -86,8 +88,10 @@ class MoviesRepositoryImpl(
     }
 
     private suspend fun saveMoviesToDb(movies: List<Movie>) {
-        val moviesEntity = movies.map { movieDbMapper.map(it) }
-        dao.insertMovies(moviesEntity)
+        withContext(Dispatchers.IO) {
+            val moviesEntity = movies.map { movieDbMapper.map(it) }
+            dao.insertMovies(moviesEntity)
+        }
     }
 
 
