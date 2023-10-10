@@ -14,4 +14,5 @@
     <string name="actors">В ролях:</string>
     <string name="plot">Сюжет:</string>
     <string name="show_cast">Show cast</string>
+    <string name="nothing_searched_yet">История поиска пуста</string>
 </resources>

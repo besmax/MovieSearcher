@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bes.max.moviesearcher.R
-import bes.max.moviesearcher.domain.db.HistoryInteractor
+import bes.max.moviesearcher.domain.api.HistoryRepository
 import bes.max.moviesearcher.domain.models.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val historyInteractor: HistoryInteractor,
+    private val historyRepository: HistoryRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
 
@@ -26,8 +26,7 @@ class HistoryViewModel @Inject constructor(
     fun fillData() {
         renderState(HistoryState.Loading)
         viewModelScope.launch {
-            historyInteractor
-                .historyMovies()
+            historyRepository.getHistoryMovies()
                 .collect { movies ->
                     processResult(movies)
                 }

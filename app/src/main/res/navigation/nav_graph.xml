@@ -44,4 +44,9 @@
             android:name="movieId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="bes.max.moviesearcher.ui.history.HistoryFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_history"/>
 </navigation>
