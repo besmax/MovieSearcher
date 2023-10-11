@@ -15,12 +15,12 @@ class NamesRepositoryImpl(private val networkClient: NetworkClient, private val 
         val response = networkClient.doRequest(NamesSearchRequest(expression))
 
         when(response.resultCode) {
-            -1 -> emit(Resource.Error("Проверьте подключение к интернету"))
+            -1 -> emit(Resource.Error("Internet error"))
             200 -> {
                 val data = (response as NamesSearchResponse).results.map { mapper.map(it) }
                 emit(Resource.Success(data))
             }
-            else -> emit(Resource.Error("Ошибка сервера"))
+            else -> emit(Resource.Error("Server error"))
         }
     }
 }
