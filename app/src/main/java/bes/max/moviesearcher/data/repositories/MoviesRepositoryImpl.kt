@@ -90,6 +90,7 @@ class MoviesRepositoryImpl(
     private suspend fun saveMoviesToDb(movies: List<Movie>) {
         withContext(Dispatchers.IO) {
             val moviesEntity = movies.map { movieDbMapper.map(it) }
+            dao.deleteAll()
             dao.insertMovies(moviesEntity)
         }
     }

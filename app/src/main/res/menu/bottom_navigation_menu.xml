@@ -6,7 +6,7 @@
         android:title="Movies" />
 
     <item
-        android:id="@+id/namesFragment2"
+        android:id="@+id/namesFragment"
         android:icon="@drawable/ic_names"
         android:title="Persons" />
 
@@ -16,7 +16,7 @@
         android:title="History" />
 
     <item
-        android:id="@+id/detailsFragment"
+        android:id="@+id/infoFragment"
         android:icon="@drawable/ic_info"
         android:title="Info" />
 </menu>

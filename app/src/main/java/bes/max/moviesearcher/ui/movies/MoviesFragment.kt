@@ -72,6 +72,11 @@ class MoviesFragment : Fragment() {
             }
         }
 
+        binding.editTextLayoutMoviesScreen.setEndIconOnClickListener {
+            binding.editTextMoviesScreen.text?.clear()
+            viewModel.clearMovies()
+        }
+
         setSearchTextWatcher()
     }
 

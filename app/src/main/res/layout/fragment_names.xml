@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff"
     tools:context="bes.max.moviesearcher.ui.names.NamesFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -49,6 +48,7 @@
         <TextView android:id="@+id/placeholderMessage"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:textSize="32sp"

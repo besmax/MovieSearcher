@@ -54,6 +54,10 @@ class NamesViewModel @Inject constructor(
         }
     }
 
+    fun clearNames() {
+        _namesScreenState.value = NamesScreenState.NotStarted
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val TAG = "NamesViewModel"

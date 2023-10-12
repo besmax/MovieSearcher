@@ -41,6 +41,11 @@ class NamesFragment : Fragment() {
 
         setTextWatcher()
 
+        binding.queryInputLayout.setEndIconOnClickListener {
+            binding.queryInput.text?.clear()
+            namesViewModel.clearNames()
+        }
+
         namesViewModel.namesScreenState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is NamesScreenState.Loading -> showLoading()

@@ -53,6 +53,10 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
+    fun clearMovies() {
+        _screenState.value = MoviesScreenState.NotStarted
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
