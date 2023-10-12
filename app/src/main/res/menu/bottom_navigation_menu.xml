@@ -3,20 +3,20 @@
     <item
         android:id="@+id/moviesFragment"
         android:icon="@drawable/ic_movies"
-        android:title="Movies" />
+        android:title="@string/movies_bottom_nav_view" />
 
     <item
         android:id="@+id/namesFragment"
         android:icon="@drawable/ic_names"
-        android:title="Persons" />
+        android:title="@string/persons_bottom_nav_view" />
 
     <item
         android:id="@+id/historyFragment"
         android:icon="@drawable/ic_history"
-        android:title="History" />
+        android:title="@string/history_bottom_nav_view" />
 
     <item
         android:id="@+id/infoFragment"
         android:icon="@drawable/ic_info"
-        android:title="Info" />
+        android:title="@string/info_bottom_nav_view" />
 </menu>
