@@ -8,7 +8,6 @@ import bes.max.moviesearcher.domain.api.MoviesRepository
 import bes.max.moviesearcher.domain.models.MovieDetails
 import bes.max.moviesearcher.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,15 +20,12 @@ class AboutViewModel @Inject constructor(
     val movieDetails: LiveData<MovieDetails> = _movieDetails
 
     fun getMovieDetails(movieId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = moviesRepository.getMovieDetails(movieId)
-            if(response is Resource.Success && response.data != null) {
-                _movieDetails.postValue(response.data)
+        viewModelScope.launch {
+            moviesRepository.getMovieDetails(movieId).collect() { response ->
+                if (response is Resource.Success && response.data != null) {
+                    _movieDetails.postValue(response.data!!)
+                }
             }
-//            if(response is Resource.Error && response.message != null) {
-//                _movieDetails.postValue()
-//            }
-
         }
     }
 

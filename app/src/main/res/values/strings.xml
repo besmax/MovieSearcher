@@ -14,4 +14,14 @@
     <string name="actors">В ролях:</string>
     <string name="plot">Сюжет:</string>
     <string name="show_cast">Show cast</string>
+    <string name="nothing_searched_yet">История поиска пуста</string>
+    <string name="search_not_started">Введите запрос для поиска</string>
+    <string name="error_no_internet">Ошибка! Проверьте подключение к интернету</string>
+    <string name="something_went_wrong">Что-то пошло не так, попробуйте ещё раз</string>
+    <string name="nothing_found">Ничего не найдено, попробуйте ещё раз</string>
+    <string name="enter_person_name">Введите имя</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_info">Версия: 1.0\nобратная связь: bespalov.m.9@ya.ru</string>
+    <string name="app_info_name">IMDB Movie Searcher</string>
 </resources>

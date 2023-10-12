@@ -9,6 +9,7 @@ import bes.max.moviesearcher.util.Resource
 import bes.max.moviesearcher.util.debounce
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,20 +36,25 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovies(userInput: String) {
         _screenState.value = MoviesScreenState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = moviesRepository.getMovies(userInput)
-            if (response is Resource.Success && response.data != null) {
-                _screenState.postValue(MoviesScreenState.ShowContent.apply {
-                    movies = response.data
-                })
-            }
-            if (response is Resource.Error && response.message == "Проверьте подключение к интернету") {
-                _screenState.postValue(MoviesScreenState.Error.apply {
-                    noInternet =
-                        response.message == "Проверьте подключение к интернету"
-                })
+        viewModelScope.launch {
+            moviesRepository.getMovies(userInput).collect() { response ->
+                if (response is Resource.Success && response.data != null) {
+                    _screenState.postValue(MoviesScreenState.ShowContent.apply {
+                        movies = response.data
+                    })
+                }
+                if (response is Resource.Error && response.message == "Проверьте подключение к интернету") {
+                    _screenState.postValue(MoviesScreenState.Error.apply {
+                        noInternet =
+                            response.message == "Проверьте подключение к интернету"
+                    })
+                }
             }
         }
+    }
+
+    fun clearMovies() {
+        _screenState.value = MoviesScreenState.NotStarted
     }
 
     companion object {

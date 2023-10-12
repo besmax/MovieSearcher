@@ -44,4 +44,19 @@
             android:name="movieId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="bes.max.moviesearcher.ui.history.HistoryFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_history"/>
+    <fragment
+        android:id="@+id/namesFragment"
+        android:name="bes.max.moviesearcher.ui.names.NamesFragment"
+        android:label="fragment_names"
+        tools:layout="@layout/fragment_names" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="bes.max.moviesearcher.ui.info.InfoFragment"
+        android:label="fragment_info"
+        tools:layout="@layout/fragment_info" />
 </navigation>
