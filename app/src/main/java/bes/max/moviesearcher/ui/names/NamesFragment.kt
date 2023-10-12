@@ -3,13 +3,13 @@ package bes.max.moviesearcher.ui.names
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import bes.max.moviesearcher.R
-import bes.max.moviesearcher.databinding.FragmentMoviesBinding
 import bes.max.moviesearcher.databinding.FragmentNamesBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +21,7 @@ class NamesFragment : Fragment() {
     private val namesViewModel: NamesViewModel by viewModels()
 
     private lateinit var textWatcher: TextWatcher
+    private var adapter: PersonListAdapter? = null
 
 
     override fun onCreateView(
@@ -34,18 +35,29 @@ class NamesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.personsList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapter = PersonListAdapter()
+        binding.personsList.adapter = adapter
+
         setTextWatcher()
 
         namesViewModel.namesScreenState.observe(viewLifecycleOwner) { state ->
-            when(state) {
+            when (state) {
                 is NamesScreenState.Loading -> showLoading()
-                is NamesScreenState.ShowContent -> showContent()
+                is NamesScreenState.ShowContent -> showContent(state)
                 is NamesScreenState.NothingFound -> showNothingFound()
-                is NamesScreenState.Error -> showError()
+                is NamesScreenState.Error -> showError(state)
                 is NamesScreenState.NotStarted -> showNotStarted()
             }
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.personsList.adapter = null
+        adapter = null
+        binding.queryInput.removeTextChangedListener(textWatcher)
     }
 
     private fun setTextWatcher() {
@@ -53,7 +65,7 @@ class NamesFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(!p0.isNullOrBlank()) {
+                if (!p0.isNullOrBlank()) {
                     namesViewModel.searchDebounce(p0.toString())
                 }
             }
@@ -69,11 +81,12 @@ class NamesFragment : Fragment() {
             progressBar.visibility = View.GONE
             personsList.visibility = View.GONE
             placeholderMessage.visibility = View.VISIBLE
-            //TODO add string res
+            placeholderMessage.text = getString(R.string.search_not_started)
         }
     }
 
-    private fun showContent() {
+    private fun showContent(state: NamesScreenState.ShowContent) {
+        adapter?.submitList(state.names)
         with(binding) {
             progressBar.visibility = View.GONE
             personsList.visibility = View.VISIBLE
@@ -89,12 +102,15 @@ class NamesFragment : Fragment() {
         }
     }
 
-    private fun showError() {
+    private fun showError(state: NamesScreenState.Error) {
         with(binding) {
             progressBar.visibility = View.GONE
             personsList.visibility = View.GONE
             placeholderMessage.visibility = View.VISIBLE
-            //TODO add string res
+            placeholderMessage.text = getString(
+                if (state.noInternet) R.string.error_no_internet
+                else R.string.something_went_wrong
+            )
         }
     }
 
@@ -103,7 +119,7 @@ class NamesFragment : Fragment() {
             progressBar.visibility = View.GONE
             personsList.visibility = View.GONE
             placeholderMessage.visibility = View.VISIBLE
-            //TODO add string res
+            placeholderMessage.text = getString(R.string.nothing_found)
         }
     }
 }

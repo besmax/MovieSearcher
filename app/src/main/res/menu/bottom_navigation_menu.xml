@@ -6,7 +6,7 @@
         android:title="Movies" />
 
     <item
-        android:id="@+id/castFragment"
+        android:id="@+id/namesFragment2"
         android:icon="@drawable/ic_names"
         android:title="Persons" />
 

@@ -1,17 +1,15 @@
 package bes.max.moviesearcher.ui.names
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import bes.max.moviesearcher.domain.api.NamesRepository
-import bes.max.moviesearcher.ui.movies.MoviesViewModel
 import bes.max.moviesearcher.util.Resource
 import bes.max.moviesearcher.util.debounce
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +46,7 @@ class NamesViewModel @Inject constructor(
                     if (response.message == "Internet error") {
                         _namesScreenState.postValue(NamesScreenState.Error(true))
                     } else {
+                        Log.d(TAG, "Error in getNames")
                         _namesScreenState.postValue(NamesScreenState.Error(false))
                     }
                 }
@@ -57,6 +56,7 @@ class NamesViewModel @Inject constructor(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val TAG = "NamesViewModel"
     }
 
 }

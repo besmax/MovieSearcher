@@ -3,6 +3,7 @@ package bes.max.moviesearcher.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import bes.max.moviesearcher.data.NetworkClient
 import bes.max.moviesearcher.data.dto.requests.MovieDetailsSearchRequest
 import bes.max.moviesearcher.data.dto.requests.MovieFullCastRequest
@@ -12,6 +13,8 @@ import bes.max.moviesearcher.data.dto.responses.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.IllegalArgumentException
+
+private const val TAG = "RetrofitNetworkClient"
 
 class RetrofitNetworkClient(
     private val imdbService: MovieApiService,
@@ -23,7 +26,7 @@ class RetrofitNetworkClient(
             return Response().apply { resultCode = -1 }
         }
 
-        if ((dto !is MovieSearchRequest) && (dto !is MovieDetailsSearchRequest) && (dto !is MovieFullCastRequest)) {
+        if ((dto !is MovieSearchRequest) && (dto !is MovieDetailsSearchRequest) && (dto !is MovieFullCastRequest) && (dto !is NamesSearchRequest)) {
             return Response().apply { resultCode = 400 }
         }
 
@@ -33,6 +36,7 @@ class RetrofitNetworkClient(
                     try {
                         imdbService.getMovies(dto.expression).apply { resultCode = 200 }
                     } catch (e: Throwable) {
+                        Log.e(TAG, "Error during MovieSearchRequest: ${e.toString()}")
                         Response().apply { resultCode = 500 }
                     }
                 }
@@ -41,6 +45,7 @@ class RetrofitNetworkClient(
                     try {
                         imdbService.getMovieDetails(dto.movieId).apply { resultCode = 200 }
                     } catch (e: Throwable) {
+                        Log.e(TAG, "Error during MovieDetailsSearchRequest: ${e.toString()}")
                         Response().apply { resultCode = 500 }
                     }
                 }
@@ -49,6 +54,7 @@ class RetrofitNetworkClient(
                     try {
                         imdbService.getMovieCast(dto.movieId).apply { resultCode = 200 }
                     } catch (e: Throwable) {
+                        Log.e(TAG, "Error during MovieFullCastRequest: ${e.toString()}")
                         Response().apply { resultCode = 500 }
                     }
                 }
@@ -56,7 +62,9 @@ class RetrofitNetworkClient(
                 is NamesSearchRequest -> {
                     try {
                         imdbService.searchNames(dto.expression).apply { resultCode = 200 }
+
                     } catch (e: Throwable) {
+                        Log.e(TAG, "Error during NamesSearchRequest: ${e.toString()}")
                         Response().apply { resultCode = 500 }
                     }
                 }

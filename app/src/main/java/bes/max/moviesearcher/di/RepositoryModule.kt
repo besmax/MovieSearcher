@@ -7,10 +7,13 @@ import bes.max.moviesearcher.data.db.MovieDao
 import bes.max.moviesearcher.data.db.MovieDatabase
 import bes.max.moviesearcher.data.mappers.MovieCastResponseToMovieFullCastMapper
 import bes.max.moviesearcher.data.mappers.MovieDbMapper
+import bes.max.moviesearcher.data.mappers.PersonDtoMapper
 import bes.max.moviesearcher.data.repositories.HistoryRepositoryImpl
 import bes.max.moviesearcher.data.repositories.MoviesRepositoryImpl
+import bes.max.moviesearcher.data.repositories.NamesRepositoryImpl
 import bes.max.moviesearcher.domain.api.HistoryRepository
 import bes.max.moviesearcher.domain.api.MoviesRepository
+import bes.max.moviesearcher.domain.api.NamesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,6 +57,16 @@ class RepositoryModule {
     @Provides
     fun provideHistoryRepository(dao: MovieDao, mapper: MovieDbMapper): HistoryRepository {
         return HistoryRepositoryImpl(dao, mapper)
+    }
+
+    @Provides
+    fun providePersonDtoMapper(): PersonDtoMapper {
+        return PersonDtoMapper()
+    }
+
+    @Provides
+    fun provideNamesRepository(networkClient: NetworkClient, mapper: PersonDtoMapper): NamesRepository {
+        return NamesRepositoryImpl(networkClient, mapper)
     }
 
 }
